@@ -1,0 +1,38 @@
+{
+  "name": "@stratos/vektor-api",
+  "version": "1.0.0",
+  "description": "Stratos Vektor - Real-Time Semantic Search & Knowledge Intelligence",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "semantic-search",
+    "vector-database",
+    "rag",
+    "knowledge",
+    "embedding"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "bull": "^4.11.3",
+    "redis": "^4.6.7",
+    "pg": "^8.10.0",
+    "pgvector": "^0.1.6",
+    "uuid": "^9.0.0",
+    "@openai/sdk": "^4.0.0",
+    "axios": "^1.4.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/express": "^4.17.17",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.1"
+  }
+}
