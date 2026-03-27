@@ -29,6 +29,7 @@ Stratos is a B2B SaaS ecosystem consisting of three tightly integrated products:
 
 ## Quick Links
 
+- [What is Stratos? (Simple Explanation)](./WHAT_IS_STRATOS.md)
 - [Getting Started Guide](./getting-started/SETUP.md)
 - [System Architecture](./shared-architecture/SYSTEM_ARCHITECTURE.md)
 - [Multi-Tenancy Model](./shared-architecture/MULTI_TENANCY.md)
