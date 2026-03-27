@@ -110,9 +110,16 @@ AURUM_PORT=3002
 docker-compose up -d
 
 # In separate terminals, start each service:
-cd meridian/backend && npm install && npm run dev
-cd vektor/backend && npm install && npm run dev
-cd aurum/backend && npm install && npm run dev
+cd meridian/backend && npm install && npm run dev    # Port 3000
+cd vektor/backend && npm install && npm run dev      # Port 3001
+cd aurum/backend && npm install && npm run dev       # Port 3002
+
+# Start ML & Ingestion services (Python):
+cd aurum/ml-service && pip install -r requirements.txt && python main.py         # Port 8001
+cd vektor/ingestion-service && pip install -r requirements.txt && python main.py # Port 8002
+
+# Start Meridian worker pool:
+cd meridian/workers && npm install && npm run dev
 
 # Start frontends in development mode:
 cd meridian/frontend && npm install && npm run dev
@@ -149,5 +156,5 @@ For questions or issues:
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: March 24, 2026  
-**Status**: Available for development
+**Last Updated**: March 27, 2026  
+**Status**: Implementation complete — all core features implemented
