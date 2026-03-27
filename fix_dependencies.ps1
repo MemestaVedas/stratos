@@ -15,7 +15,7 @@ npm install --save-dev @types/express @types/node @types/uuid @types/cors @types
 Pop-Location
 
 Push-Location "d:\Kushal\projects\stratos\meridian\workers"
-npm install --save-dev @types/express @types/node @types/uuid @types/cors @types/bullmq @types/ioredis
+npm install --save-dev @types/express @types/node @types/uuid @types/cors @types/ioredis
 Pop-Location
 
 Write-Host "Done! You can now start the services." -ForegroundColor Green
