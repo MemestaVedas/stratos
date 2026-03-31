@@ -53,6 +53,13 @@ This repository is intentionally organized to demonstrate strong software engine
 
 See `CONTRIBUTING.md` for full details.
 
+## Automation and Quality Gates
+
+- GitHub Actions CI for Node and Python services
+- CodeQL security analysis workflow
+- Dependabot weekly dependency updates
+- Local validation script: `./build_all.ps1`
+
 ## Documentation
 
 - Platform wiki: `wiki/README.md`

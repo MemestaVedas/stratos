@@ -1,0 +1,38 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /aurum/backend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /aurum/frontend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /meridian/backend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /meridian/frontend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /meridian/workers
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /vektor/backend
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /vektor/frontend
+    schedule:
+      interval: weekly
+  - package-ecosystem: pip
+    directory: /aurum/ml-service
+    schedule:
+      interval: weekly
+  - package-ecosystem: pip
+    directory: /vektor/ingestion-service
+    schedule:
+      interval: weekly
