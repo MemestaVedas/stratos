@@ -5,6 +5,7 @@
   "main": "dist/worker.js",
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "dev": "ts-node src/worker.ts",
     "start": "node dist/worker.js"
   },

@@ -4,8 +4,8 @@
 
 Before you begin, ensure you have installed:
 
-- **Node.js** 18+ (for backend APIs and frontend)
-- **Python** 3.10+ (for ML service in Aurum)
+- **Node.js** 20+ (for backend APIs and frontends)
+- **Python** 3.11+ (for ML and ingestion services)
 - **Docker** and **Docker Compose** (for infrastructure)
 - **PostgreSQL** client tools (`psql`)
 - **Git** (for version control)
@@ -20,37 +20,11 @@ cd d:\Kushal\projects\stratos
 
 ### Step 2: Start Infrastructure
 
-Create a `docker-compose.yml` in the root of the stratos directory:
+Use the repository's existing `docker-compose.yml` from the root directory:
 
-```yaml
-version: '3.8'
-services:
-  postgres:
-    image: postgis/postgis:15-3.3
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-volumes:
-  postgres_data:
-  redis_data:
-```
-
-Start services:
 ```bash
 docker-compose up -d
-docker logs postgres --follow  # Wait for "database system is ready"
+docker-compose ps
 ```
 
 ### Step 3: Initialize Databases
@@ -111,6 +85,15 @@ LOG_LEVEL=debug
 ```
 
 ### Step 5: Install Dependencies and Start Services
+
+Fast path (recommended on Windows PowerShell):
+
+```powershell
+./build_all.ps1
+./start_all.ps1
+```
+
+Manual path (if you want per-service terminals):
 
 #### Terminal 1 - Meridian Backend
 ```bash

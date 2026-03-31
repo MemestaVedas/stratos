@@ -1,81 +1,85 @@
 $ErrorActionPreference = "Stop"
-$ProjectsRoot = "d:\Kushal\projects\stratos"
+$ProjectsRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host "============================="
-Write-Host "Building Stratos Platform"
+Write-Host "Validating Stratos Platform"
 Write-Host "============================="
 
-# Function to install and build a Node project
-function Build-NodeProject {
+function Invoke-NpmInstall {
+    if (Test-Path "package-lock.json") {
+        npm ci
+    } else {
+        npm install
+    }
+}
+
+function Invoke-NpmScriptIfPresent {
+    param([string]$ScriptName)
+
+    $package = Get-Content -Raw "package.json" | ConvertFrom-Json
+    if ($null -ne $package.scripts.$ScriptName) {
+        npm run $ScriptName
+    }
+}
+
+function Validate-NodeProject {
     param([string]$Path, [string]$Name)
-    Write-Host "`n[$Name] Installing dependencies..." -ForegroundColor Cyan
+
+    Write-Host "`n[$Name] Installing dependencies and running checks..." -ForegroundColor Cyan
     Push-Location $Path
     try {
-        npm install
-        if (Test-Path "tsconfig.json") {
-            Write-Host "[$Name] Building Typescript..." -ForegroundColor Cyan
-            npm run build
-        } elseif (Test-Path "next.config.js" -or Test-Path "next.config.mjs") {
-            Write-Host "[$Name] Building Next.js..." -ForegroundColor Cyan
-            npm run build
+        Invoke-NpmInstall
+        Invoke-NpmScriptIfPresent "lint"
+        Invoke-NpmScriptIfPresent "typecheck"
+        $package = Get-Content -Raw "package.json" | ConvertFrom-Json
+        if ($null -ne $package.scripts.test) {
+            npm run test -- --passWithNoTests
         }
-        Write-Host "[$Name] ✅ Success" -ForegroundColor Green
-    } catch {
-        Write-Host "[$Name] ❌ Failed: $_" -ForegroundColor Red
+        Invoke-NpmScriptIfPresent "build"
+        Write-Host "[$Name] Success" -ForegroundColor Green
     } finally {
         Pop-Location
     }
 }
 
-# Function to install Python project
-function Build-PythonProject {
+function Validate-PythonProject {
     param([string]$Path, [string]$Name)
-    Write-Host "`n[$Name] Installing Python dependencies..." -ForegroundColor Cyan
+
+    Write-Host "`n[$Name] Installing dependencies and running checks..." -ForegroundColor Cyan
     Push-Location $Path
     try {
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-        Write-Host "[$Name] ✅ Success" -ForegroundColor Green
-    } catch {
-        Write-Host "[$Name] ❌ Failed: $_" -ForegroundColor Red
+        python -m py_compile main.py
+        Write-Host "[$Name] Success" -ForegroundColor Green
     } finally {
         Pop-Location
     }
 }
 
-# Backends
-Build-NodeProject "$ProjectsRoot\meridian\backend" "Meridian Backend"
-Build-NodeProject "$ProjectsRoot\vektor\backend" "Vektor Backend"
-Build-NodeProject "$ProjectsRoot\aurum\backend" "Aurum Backend"
+$nodeProjects = @(
+    @{ Path = "$ProjectsRoot\aurum\backend"; Name = "Aurum Backend" },
+    @{ Path = "$ProjectsRoot\aurum\frontend"; Name = "Aurum Frontend" },
+    @{ Path = "$ProjectsRoot\meridian\backend"; Name = "Meridian Backend" },
+    @{ Path = "$ProjectsRoot\meridian\frontend"; Name = "Meridian Frontend" },
+    @{ Path = "$ProjectsRoot\meridian\workers"; Name = "Meridian Workers" },
+    @{ Path = "$ProjectsRoot\vektor\backend"; Name = "Vektor Backend" },
+    @{ Path = "$ProjectsRoot\vektor\frontend"; Name = "Vektor Frontend" }
+)
 
-# Workers
-Build-NodeProject "$ProjectsRoot\meridian\workers" "Meridian Workers"
+$pythonProjects = @(
+    @{ Path = "$ProjectsRoot\aurum\ml-service"; Name = "Aurum ML Service" },
+    @{ Path = "$ProjectsRoot\vektor\ingestion-service"; Name = "Vektor Ingestion Service" }
+)
 
-# Frontends
-# Note: Next.js builds might take a while and fail if there are TS errors. 
-# For now, we'll just run npm install and tsc --noEmit to check for typescript errors.
-function TypeCheck-NodeProject {
-    param([string]$Path, [string]$Name)
-    Write-Host "`n[$Name] Installing dependencies & Typechecking..." -ForegroundColor Cyan
-    Push-Location $Path
-    try {
-        npm install
-        npx tsc --noEmit
-        Write-Host "[$Name] ✅ Success" -ForegroundColor Green
-    } catch {
-        Write-Host "[$Name] ❌ Failed: $_" -ForegroundColor Red
-    } finally {
-        Pop-Location
-    }
+foreach ($project in $nodeProjects) {
+    Validate-NodeProject $project.Path $project.Name
 }
 
-TypeCheck-NodeProject "$ProjectsRoot\meridian\frontend" "Meridian Frontend"
-TypeCheck-NodeProject "$ProjectsRoot\vektor\frontend" "Vektor Frontend"
-TypeCheck-NodeProject "$ProjectsRoot\aurum\frontend" "Aurum Frontend"
-
-# Python Services
-Build-PythonProject "$ProjectsRoot\aurum\ml-service" "Aurum ML Service"
-Build-PythonProject "$ProjectsRoot\vektor\ingestion-service" "Vektor Ingestion Service"
+foreach ($project in $pythonProjects) {
+    Validate-PythonProject $project.Path $project.Name
+}
 
 Write-Host "`n============================="
-Write-Host "Build process completed."
+Write-Host "Validation completed successfully."
 Write-Host "============================="

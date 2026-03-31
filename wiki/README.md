@@ -31,6 +31,7 @@ Stratos is a B2B SaaS ecosystem consisting of three tightly integrated products:
 
 - [What is Stratos? (Simple Explanation)](./WHAT_IS_STRATOS.md)
 - [Getting Started Guide](./getting-started/SETUP.md)
+- [Development Workflow](./getting-started/DEVELOPMENT_WORKFLOW.md)
 - [System Architecture](./shared-architecture/SYSTEM_ARCHITECTURE.md)
 - [Multi-Tenancy Model](./shared-architecture/MULTI_TENANCY.md)
 - [API Standards](./shared-architecture/API_STANDARDS.md)
@@ -156,6 +157,6 @@ For questions or issues:
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: March 27, 2026  
-**Status**: Implementation complete — all core features implemented
+**Version**: 1.1.0  
+**Last Updated**: March 31, 2026  
+**Status**: Active hardening and quality-improvement phase
