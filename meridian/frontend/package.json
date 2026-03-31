@@ -17,7 +17,7 @@
     "react-flow-renderer": "^11.10.0",
     "zustand": "^4.3.0",
     "axios": "^1.4.0",
-    "lucide-react": "^0.263.1"
+    "lucide-react": "^1.7.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
