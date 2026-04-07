@@ -17,7 +17,7 @@
     "zustand": "^4.3.0",
     "axios": "^1.4.0",
     "lucide-react": "^0.263.1",
-    "recharts": "^2.7.0"
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
